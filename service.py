@@ -12,7 +12,7 @@ from croniter import croniter
 # service path definitions
 serviceletd = "/opt/servicelet/serviceletd"
 schema = "/opt/servicelet/schema.json"
-clipath = "/opt/servicelet/cloudwmcli"
+clipath = "/opt/servicelet/cloudcli"
 logpath = "/opt/servicelet/service.log"
 
 
@@ -20,7 +20,7 @@ def update_service(client_id, client_secret, tasks):
     # todo: make sure user spool directory exists
     with tempfile.NamedTemporaryFile(delete=False, suffix='.ctab', prefix=os.path.join(tempfile.gettempdir(), "")) as tmp:
         for t in tasks:
-            tmp.write(("%s root %s --api-clientid %s --api-secret %s server %s --name %s > %s 2>&1\n"
+            tmp.write(("%s %s --api-clientid %s --api-secret %s server %s --name %s >> %s 2>&1\n"
                     % (t["expression"], clipath, client_id, client_secret, t["action"], t["serverName"], logpath)).encode('utf-8'))
 
         # update cron
